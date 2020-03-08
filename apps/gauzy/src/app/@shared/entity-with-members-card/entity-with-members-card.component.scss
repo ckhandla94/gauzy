@@ -1,44 +1,87 @@
-.card-body {
-	margin: 20px;
+@import 'var';
 
+.card-body {
+	border: 1px solid nb-theme(color-basic-400);
+	margin-bottom: 15px;
+
+	nb-card-header {
+		display: block;
+		border-bottom: none;
+	}
+	nb-card-body {
+		border-top: 1px solid nb-theme(color-basic-400);
+		display: block;
+	}
 	.header-container {
-		text-align: center;
+		cursor: pointer;
 		position: relative;
 		.members-count {
-			font-size: 0.7em;
-			color: darkgray;
+			font-size: 0.8em;
 		}
-	}
 
-	.team-card {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-
-		.name-container {
-			display: flex;
-			display: flex;
-			align-items: center;
-			margin-bottom: 10px;
-
-			.image-container {
-				width: 70px;
-				height: 50px;
-				display: flex;
-
-				img {
-					height: 100%;
-					max-width: 70px;
+		.sub-heading {
+			padding-top: 10px;
+			margin-top: 10px;
+			border-top: 1px solid nb-theme(color-basic-400);
+			&.empty {
+				display: none;
+			}
+			::ng-deep {
+				.client-info {
+					display: flex;
+					flex-direction: row;
+					flex-wrap: wrap;
+					margin-left: -10px;
+					margin-right: -10px;
+					.info-line {
+						display: flex;
+						flex-direction: row;
+						font-size: 0.8em;
+						color: nb-theme(color-basic-700);
+						width: 33%;
+						padding: 2px 30px 2px 10px;
+						.info-meta {
+							width: 30%;
+						}
+						.info-value {
+							color: nb-theme(color-basic-600);
+							display: flex;
+							.info-list-item:not(:last-child)::after {
+								content: ',';
+								margin-right: 5px;
+							}
+						}
+					}
 				}
 			}
 		}
-
-		.button-container {
-			display: flex;
-			width: 160px;
-			justify-content: space-between;
-			margin-top: 15px;
-			margin-left: 9px;
+	}
+	.member-info {
+		&:hover {
+			text-decoration: none;
+		}
+		.info {
+			align-self: center;
+		}
+		.image-container {
+			padding: 1px;
+			border: 1px solid nb-theme(color-basic-400);
+			border-radius: 48px;
+			img {
+				border-radius: 48px;
+				overflow: hidden;
+				height: 48px;
+				object-fit: cover;
+				width: 48px;
+			}
+		}
+		.user-title {
+			margin-bottom: 0px;
+			color: nb-theme(color-basic-700);
+		}
+		.user-sub-title {
+			color: nb-theme(color-basic-600);
+			font-size: 0.8em;
 		}
 	}
 }

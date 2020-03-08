@@ -1,4 +1,4 @@
-<nb-card>
+<nb-card class="mb-0">
 	<nb-card-header>
 		{{ 'FORM.LABELS.ADD_NEW_EMPLOYMENT_TYPE' | translate }}
 	</nb-card-header>
@@ -28,47 +28,45 @@
 			</div>
 		</form>
 	</nb-card-body>
-	<nb-card size="small" class="mb-0">
-		<nb-card-header>
-			{{ 'ORGANIZATIONS_PAGE.EMPLOYMENT_TYPES' | translate }}
-		</nb-card-header>
-		<nb-list>
-			<nb-list-item *ngFor="let empType of empTypes">
-				<div class="input-group">
-					<input
-						nbInput
-						class="form-control mr-2"
-						required
-						#inputBox="ngModel"
-						[(ngModel)]="empType.name"
-					/>
-					<div class="input-group-append">
-						<button
-							class="mr-2"
-							[disabled]="inputBox.invalid"
-							nbButton
-							size="small"
-							status="success"
-							(click)="update(empType)"
-						>
-							<nb-icon class="mr-2" icon="save-outline"></nb-icon>
-							{{ 'BUTTONS.SAVE' | translate }}
-						</button>
-						<button
-							nbButton
-							size="small"
-							status="danger"
-							(click)="delete(empType)"
-						>
-							<nb-icon
-								class="mr-2"
-								icon="trash-2-outline"
-							></nb-icon>
-							{{ 'BUTTONS.DELETE' | translate }}
-						</button>
-					</div>
+</nb-card>
+<nb-card>
+	<nb-card-header>
+		{{ 'ORGANIZATIONS_PAGE.EMPLOYMENT_TYPES' | translate }}
+	</nb-card-header>
+
+	<nb-list>
+		<nb-list-item *ngFor="let empType of empTypes">
+			<div class="input-group">
+				<input
+					nbInput
+					class="form-control mr-2"
+					required
+					#inputBox="ngModel"
+					[(ngModel)]="empType.name"
+				/>
+				<div class="input-group-append">
+					<button
+						class="mr-2"
+						[disabled]="inputBox.invalid"
+						nbButton
+						size="small"
+						status="success"
+						(click)="update(empType)"
+					>
+						<nb-icon class="mr-2" icon="save-outline"></nb-icon>
+						{{ 'BUTTONS.SAVE' | translate }}
+					</button>
+					<button
+						nbButton
+						size="small"
+						status="danger"
+						(click)="delete(empType)"
+					>
+						<nb-icon class="mr-2" icon="trash-2-outline"></nb-icon>
+						{{ 'BUTTONS.DELETE' | translate }}
+					</button>
 				</div>
-			</nb-list-item>
-		</nb-list>
-	</nb-card>
+			</div>
+		</nb-list-item>
+	</nb-list>
 </nb-card>

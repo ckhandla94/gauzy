@@ -15,6 +15,8 @@ export class EntityWithMembersCardComponent {
 
 	@Output() edit = new EventEmitter();
 
+	active = false;
+
 	removeEntity(id: string): void {
 		this.remove.emit(id);
 	}

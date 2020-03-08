@@ -127,6 +127,9 @@
 	}
 
 	nb-route-tabset {
+		.route-tabset {
+			padding: 0;
+		}
 		nb-icon {
 			margin-right: 10px;
 		}

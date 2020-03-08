@@ -1,74 +1,109 @@
-<nb-card style="padding: 0 !important" class="card-body">
-	<nb-card-header style="padding: 0.5rem;">
+<div class="card-body p-0">
+	<nb-card-header (click)="active = !active">
 		<div class="header-container">
-			<div>{{ entityWithMembers.name }}</div>
-			<div class="members-count">
-				{{ 'FORM.PLACEHOLDERS.MEMBERS_COUNT' | translate }}
-				{{
-					entityWithMembers.members
-						? entityWithMembers.members.length
-						: 0
-				}}
+			<div class="heading row ">
+				<div class="col">
+					<h6>{{ entityWithMembers.name }}</h6>
+					<div class="members-count">
+						{{ 'FORM.PLACEHOLDERS.MEMBERS_COUNT' | translate }}
+						{{
+							entityWithMembers.members
+								? entityWithMembers.members.length
+								: 0
+						}}
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="button-container">
+						<button
+							nbButton
+							class="mr-2"
+							status="info"
+							size="tiny"
+							(click)="
+								$event.stopPropagation();
+								editEntity(entityWithMembers.id)
+							"
+						>
+							<nb-icon class="mr-1" icon="edit-outline"></nb-icon
+							>{{ 'BUTTONS.EDIT' | translate }}
+						</button>
+						<button
+							size="tiny"
+							class="mr-2"
+							nbButton
+							(click)="
+								$event.stopPropagation();
+								removeEntity(entityWithMembers.id)
+							"
+							status="danger"
+						>
+							<nb-icon
+								class="mr-2"
+								icon="trash-2-outline"
+							></nb-icon
+							>{{ 'BUTTONS.DELETE' | translate }}
+						</button>
+					</div>
+				</div>
 			</div>
-			<ng-content></ng-content>
+			<div
+				class="sub-heading"
+				[ngClass]="{ empty: !ref.innerHTML.trim() }"
+				#ref
+			>
+				<ng-content></ng-content>
+			</div>
 		</div>
 	</nb-card-header>
 
-	<nb-card-body class="team-card">
+	<nb-card-body class="team-card" *ngIf="active">
 		<div
+			class="row"
 			*ngIf="
 				entityWithMembers.members &&
-				entityWithMembers.members.length > 0
+					entityWithMembers.members.length > 0;
+				else noMemberFound
 			"
 		>
 			<div
-				class="name-container"
 				*ngFor="let member of entityWithMembers.members"
+				class="col-sm-4 col-md-3 mb-3"
 			>
-				<div class="image-container">
-					<a
-						href="/#/pages/employees/edit/{{
-							member.id
-						}}/profile/main"
-						target="_blank"
-					>
-						<img
-							nbTooltip="{{
-								'ORGANIZATIONS_PAGE.EDIT.CLICK_EMPLOYEE'
-									| translate
-							}}"
-							[src]="member.user.imageUrl"
-						/>
-					</a>
-				</div>
-				<span
-					>{{ member.user.firstName }}
-					{{ member.user.lastName }}
-				</span>
+				<a
+					href="/#/pages/employees/edit/{{ member.id }}/profile/main"
+					class="member-info"
+					target="_blank"
+				>
+					<div class="row ">
+						<div class="col-auto pr-0">
+							<div class="image-container">
+								<img
+									[nbTooltip]="
+										'ORGANIZATIONS_PAGE.EDIT.CLICK_EMPLOYEE'
+											| translate
+									"
+									[src]="member.user.imageUrl"
+								/>
+							</div>
+						</div>
+						<div class="col info">
+							<p class="user-title">
+								{{ member.user.firstName }}
+								{{ member.user.lastName }}
+							</p>
+							<p class="user-sub-title mb-2">
+								{{ member.user.email }}
+							</p>
+						</div>
+					</div>
+				</a>
 			</div>
 		</div>
-
-		<div class="button-container">
-			<button
-				nbButton
-				class="mr-2"
-				status="info"
-				size="tiny"
-				(click)="editEntity(entityWithMembers.id)"
-			>
-				<nb-icon class="mr-1" icon="edit-outline"></nb-icon
-				>{{ 'BUTTONS.EDIT' | translate }}
-			</button>
-			<button
-				size="tiny"
-				class="mr-2"
-				nbButton
-				(click)="removeEntity(entityWithMembers.id)"
-				status="danger"
-			>
-				<nb-icon class="mr-2" icon="trash-2-outline"></nb-icon
-				>{{ 'BUTTONS.DELETE' | translate }}
-			</button>
-		</div>
+		<ng-template #noMemberFound>
+			<div class="text-center h6">
+				No member found.
+			</div>
+		</ng-template>
 	</nb-card-body>
-</nb-card>
+</div>
