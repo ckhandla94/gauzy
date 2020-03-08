@@ -61,7 +61,7 @@ export class EmployeesService {
 
 	getEmpTypes(orgId: string): Observable<EmployeeTypesCreateInput[]> {
 		return this.http.get<EmployeeTypesCreateInput[]>(
-			`http://localhost:3000/api/empTypes/getEmpTypes/${orgId}`
+			`/api/empTypes/getEmpTypes/${orgId}`
 		);
 	}
 
@@ -69,7 +69,7 @@ export class EmployeesService {
 		empType: EmployeeTypesCreateInput
 	): Observable<EmployeeTypesCreateInput> {
 		return this.http.post<EmployeeTypesCreateInput>(
-			'http://localhost:3000/api/empTypes/addType',
+			'/api/empTypes/addType',
 			empType
 		);
 	}

@@ -5,16 +5,13 @@ import { HttpClient } from '@angular/common/http';
 export class OrganizationEmpTypesService {
 	constructor(private http: HttpClient) {}
 
-	delType(id: string) {
-		return this.http.delete(
-			`http://localhost:3000/api/empTypes/delType/${id}`
-		);
+	deleteEmployeeType(id: string) {
+		return this.http.delete(`/api/empTypes/delType/${id}`).toPromise();
 	}
 
 	update(empType) {
-		return this.http.patch(
-			`http://localhost:3000/api/empTypes/updateType/${empType.id}`,
-			empType
-		);
+		return this.http
+			.patch(`/api/empTypes/updateType/${empType.id}`, empType)
+			.toPromise();
 	}
 }

@@ -3,13 +3,17 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { EmployeesService } from '../../../../../@core/services/employees.service';
 import {
-	Employee,
 	Organization,
-	EmployeeTypesCreateInput
+	EmployeeTypesCreateInput,
+	EmployeeTypes
 } from '@gauzy/models';
 import { takeUntil } from 'rxjs/operators';
 import { OrganizationEditStore } from '../../../../../@core/services/organization-edit-store.service';
 import { OrganizationEmpTypesService } from '../../../../../@core/services/organization-emp-types.service';
+import { NbDialogService, NbToastrService } from '@nebular/theme';
+import { DeleteConfirmationComponent } from '../../../../../@shared/user/forms/delete-confirmation/delete-confirmation.component';
+import { TranslateService } from '@ngx-translate/core';
+import { ErrorHandlingService } from '../../../../../@core/services/error-handling.service';
 
 @Component({
 	selector: 'ga-edit-org-emptypes',
@@ -18,13 +22,17 @@ import { OrganizationEmpTypesService } from '../../../../../@core/services/organ
 export class EditOrganizationEmployeeTypes implements OnInit, OnDestroy {
 	private _ngDestroy$ = new Subject<void>();
 	form: FormGroup;
-	selectedEmployee: Employee;
+	selectedEmployeeType: EmployeeTypes;
 	organization: Organization;
 	empTypes: EmployeeTypesCreateInput[];
 
 	constructor(
 		private fb: FormBuilder,
+		private translateService: TranslateService,
+		private errorHandler: ErrorHandlingService,
+		private toastrService: NbToastrService,
 		private employeeService: EmployeesService,
+		private dialogService: NbDialogService,
 		private organizationEditStore: OrganizationEditStore,
 		private organizationEmpTypesService: OrganizationEmpTypesService
 	) {}
@@ -67,19 +75,48 @@ export class EditOrganizationEmployeeTypes implements OnInit, OnDestroy {
 		this.form.reset();
 	}
 
-	delType(id) {
-		this.organizationEmpTypesService
-			.delType(id)
-			.pipe(takeUntil(this._ngDestroy$))
-			.subscribe();
-		this.empTypes = this.empTypes.filter((t) => t['id'] !== id);
+	delete(selectedEmployeeType) {
+		this.dialogService
+			.open(DeleteConfirmationComponent)
+			.onClose.pipe(takeUntil(this._ngDestroy$))
+			.subscribe(async (result) => {
+				if (result) {
+					try {
+						await this.organizationEmpTypesService.deleteEmployeeType(
+							selectedEmployeeType.id
+						);
+						const message = this.translateService.instant(
+							'TOASTR.MESSAGE.DELETE_EMPLOYEE_TYPE',
+							{ name: selectedEmployeeType.name }
+						);
+						const succes = this.translateService.instant(
+							'TOASTR.TITLE.SUCCESS'
+						);
+						this.toastrService.primary(message, succes);
+						const index = this.empTypes.indexOf(
+							selectedEmployeeType
+						);
+						this.empTypes = this.empTypes.splice(index, 1);
+					} catch (error) {
+						this.errorHandler.handleError(error);
+					}
+				}
+			});
 	}
 
-	update(empType) {
-		this.organizationEmpTypesService
-			.update(empType)
-			.pipe(takeUntil(this._ngDestroy$))
-			.subscribe();
+	async update(empType) {
+		try {
+			await this.organizationEmpTypesService.update(empType);
+			const message = this.translateService.instant(
+				'TOASTR.MESSAGE.UPADTED_EMPLOYEE_TYPE'
+			);
+			const succes = this.translateService.instant(
+				'TOASTR.TITLE.SUCCESS'
+			);
+			this.toastrService.primary(message, succes);
+		} catch (error) {
+			this.errorHandler.handleError(error);
+		}
 	}
 
 	ngOnDestroy() {

@@ -1,52 +1,72 @@
 <nb-card>
+	<nb-card-header>
+		{{ 'FORM.LABELS.ADD_NEW_EMPLOYMENT_TYPE' | translate }}
+	</nb-card-header>
 	<nb-card-body>
-		<div class="form-group">
-			<button
-				class="mr-2"
-				(click)="submitForm()"
-				nbButton
-				status="success"
-			>
-				{{ 'BUTTONS.SAVE' | translate }}
-			</button>
-		</div>
-		<form [formGroup]="form" *ngIf="form" class="row">
-			<div class="form-group col-4">
+		<form [formGroup]="form" *ngIf="form">
+			<div class="input-group">
 				<input
+					class="form-control mr-2"
 					type="text"
 					#name
 					nbInput
-					fullWidth
 					formControlName="name"
 					placeholder="{{ 'FORM.PLACEHOLDERS.NAME' | translate }}"
 				/>
+				<div class="input-group-append">
+					<button
+						(click)="submitForm()"
+						[disabled]="form.invalid"
+						size="small"
+						nbButton
+						status="success"
+					>
+						<nb-icon class="mr-2" icon="plus-outline"></nb-icon>
+						{{ 'BUTTONS.CREATE' | translate }}
+					</button>
+				</div>
 			</div>
 		</form>
 	</nb-card-body>
-	<nb-card size="small">
+	<nb-card size="small" class="mb-0">
 		<nb-card-header>
-			Employment Types
+			{{ 'ORGANIZATIONS_PAGE.EMPLOYMENT_TYPES' | translate }}
 		</nb-card-header>
 		<nb-list>
 			<nb-list-item *ngFor="let empType of empTypes">
-				<input nbInput [(ngModel)]="empType.name" />
-				<div style="margin-left: 10px;">
-					<button
-						nbButton
-						size="small"
-						status="success"
-						(click)="update(empType)"
-					>
-						Update
-					</button>
-					<button
-						nbButton
-						size="small"
-						status="danger"
-						(click)="delType(empType['id'])"
-					>
-						X
-					</button>
+				<div class="input-group">
+					<input
+						nbInput
+						class="form-control mr-2"
+						required
+						#inputBox="ngModel"
+						[(ngModel)]="empType.name"
+					/>
+					<div class="input-group-append">
+						<button
+							class="mr-2"
+							[disabled]="inputBox.invalid"
+							nbButton
+							size="small"
+							status="success"
+							(click)="update(empType)"
+						>
+							<nb-icon class="mr-2" icon="save-outline"></nb-icon>
+							{{ 'BUTTONS.SAVE' | translate }}
+						</button>
+						<button
+							nbButton
+							size="small"
+							status="danger"
+							(click)="delete(empType)"
+						>
+							<nb-icon
+								class="mr-2"
+								icon="trash-2-outline"
+							></nb-icon>
+							{{ 'BUTTONS.DELETE' | translate }}
+						</button>
+					</div>
 				</div>
 			</nb-list-item>
 		</nb-list>
