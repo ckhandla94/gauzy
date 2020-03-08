@@ -20,12 +20,10 @@ import { Organization } from '../organization';
 import { OrganizationTeams } from '../organization-teams/organization-teams.entity';
 import { User } from '../user';
 import { Tenant } from '../tenant';
-import { EmployeeTypes } from '../employee-types/employee-types.entity';
 import { Tag } from '../tags';
 
 @Entity('employee')
 export class Employee extends Base implements IEmployee {
-	
 	@ManyToMany((type) => Tag)
 	@JoinTable({
 		name: 'tags_employee'
@@ -105,9 +103,23 @@ export class Employee extends Base implements IEmployee {
 	})
 	teams?: OrganizationTeams[];
 
-	@ManyToMany((type) => EmployeeTypes, { cascade: true })
-	@JoinTable({
-		name: 'employee_employeeTypes'
-	})
-	empTypes?: EmployeeTypes[];
+	// @ManyToMany((type) => EmployeeTypes, { cascade: true })
+	// @JoinTable({
+	// 	name: 'employee_employeeTypes'
+	// })
+	// empTypes?: EmployeeTypes[];
+
+	// @ManyToMany(type => EmployeeTypes)
+	// @JoinTable({
+	// 	name: "employee_employeeTypes", // table name for the junction table of this relation
+	// 	joinColumn: {
+	// 		name: "employee",
+	// 		referencedColumnName: "id"
+	// 	},
+	// 	inverseJoinColumn: {
+	// 		name: "employee_types",
+	// 		referencedColumnName: "id"
+	// 	}
+	// })
+	// employeeTypes!: EmployeeTypes[];
 }

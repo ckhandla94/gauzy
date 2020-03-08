@@ -1,8 +1,7 @@
-import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Params } from '@angular/router';
-import { Employee, EmployeeTypesCreateInput } from '@gauzy/models';
+import { Employee, EmployeeTypes } from '@gauzy/models';
 import { NbToastrService } from '@nebular/theme';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -25,11 +24,10 @@ export class EditEmployeeMainComponent implements OnInit, OnDestroy {
 	selectedEmployee: Employee;
 	fakeDepartments: { departmentName: string; departmentId: string }[] = [];
 	fakePositions: { positionName: string; positionId: string }[] = [];
-	employeeTypes: EmployeeTypesCreateInput[];
+	employeeTypes: EmployeeTypes[];
 
 	constructor(
 		private fb: FormBuilder,
-		private location: Location,
 		private toastrService: NbToastrService,
 		private employeeStore: EmployeeStore,
 		private employeeService: EmployeesService
@@ -105,7 +103,7 @@ export class EditEmployeeMainComponent implements OnInit, OnDestroy {
 			firstName: [employee.user.firstName, Validators.required],
 			lastName: [employee.user.lastName, Validators.required],
 			imageUrl: [employee.user.imageUrl, Validators.required],
-			empTypes: [['']]
+			employeeTypes: [[]]
 		});
 	}
 
